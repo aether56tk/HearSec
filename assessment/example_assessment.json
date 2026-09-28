@@ -1,0 +1,44 @@
+{
+  "assessment_id": "HS-DEMO-001",
+  "date": "2026-09-29",
+  "authorization": {
+    "scope": "Synthetic demonstration data only",
+    "authorized_by": "HearSec project"
+  },
+  "target": {
+    "device_type": "Connected hearing aid",
+    "model": "Synthetic-Test-Device",
+    "firmware": "0.0.0-demo",
+    "companion_app": "HearSec Demo App",
+    "app_version": "0.1.0",
+    "platform": "Synthetic"
+  },
+  "data_flows": [
+    {
+      "source": "Hearing Aid",
+      "destination": "Smartphone",
+      "data_category": "Device status/configuration",
+      "protection": "Documented/observed status to be completed during authorized testing"
+    },
+    {
+      "source": "Companion App",
+      "destination": "Cloud",
+      "data_category": "Synthetic account/device metadata",
+      "protection": "To be assessed"
+    }
+  ],
+  "findings": [
+    {
+      "id": "HS-DEMO-001",
+      "category": "Privacy",
+      "title": "Synthetic demonstration finding",
+      "evidence": "No real-world device was tested; this entry demonstrates the data model only.",
+      "risk": {
+        "likelihood": "Unknown",
+        "impact": "Low",
+        "level": "Not Rated"
+      },
+      "recommendation": "Replace synthetic evidence with authorized, reproducible evidence during a formal assessment."
+    }
+  ]
+}
