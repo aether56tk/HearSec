@@ -1,0 +1,55 @@
+{
+  "version": "0.1",
+  "assets": [
+    {
+      "id": "HA",
+      "name": "Hearing aid",
+      "category": "device",
+      "examples": [
+        "firmware",
+        "configuration",
+        "paired-device state"
+      ]
+    },
+    {
+      "id": "BLE",
+      "name": "BLE link",
+      "category": "communication",
+      "examples": [
+        "pairing",
+        "characteristics",
+        "advertised data"
+      ]
+    },
+    {
+      "id": "APP",
+      "name": "Companion mobile app",
+      "category": "software",
+      "examples": [
+        "permissions",
+        "credentials",
+        "local database"
+      ]
+    },
+    {
+      "id": "CLOUD",
+      "name": "Cloud/clinical service",
+      "category": "backend",
+      "examples": [
+        "account data",
+        "telemetry",
+        "sync data"
+      ]
+    },
+    {
+      "id": "PATIENT",
+      "name": "Patient/user data",
+      "category": "privacy",
+      "examples": [
+        "hearing settings",
+        "usage data",
+        "identifiers"
+      ]
+    }
+  ]
+}
