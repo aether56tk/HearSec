@@ -1,1 +1,50 @@
-from dataclasses import dataclass\n\n\n@dataclass\nclass Finding:\n    finding_id: str\n    title: str\n    severity: str\n    likelihood: int\n    impact: int\n    evidence: str = ""\n    recommendation: str = ""\n\n\ndef calculate_risk(likelihood: int, impact: int) -> int:\n    if not 1 <= likelihood <= 5 or not 1 <= impact <= 5:\n        raise ValueError("likelihood and impact must be between 1 and 5")\n    return likelihood * impact\n\n\ndef severity_from_score(score: int) -> str:\n    if score >= 20:\n        return "critical"\n    if score >= 15:\n        return "high"\n    if score >= 8:\n        return "medium"\n    if score >= 4:\n        return "low"\n    return "informational"\n\n\ndef build_finding(finding_id: str, title: str, likelihood: int, impact: int, evidence: str = "", recommendation: str = "") -> Finding:\n    score = calculate_risk(likelihood, impact)\n    return Finding(finding_id, title, severity_from_score(score), likelihood, impact, evidence, recommendation)\n
+from dataclasses import dataclass
+
+
+@dataclass
+class Finding:
+    finding_id: str
+    title: str
+    severity: str
+    likelihood: int
+    impact: int
+    evidence: str = ""
+    recommendation: str = ""
+
+
+def calculate_risk(likelihood: int, impact: int) -> int:
+    if not 1 <= likelihood <= 5 or not 1 <= impact <= 5:
+        raise ValueError("likelihood and impact must be between 1 and 5")
+    return likelihood * impact
+
+
+def severity_from_score(score: int) -> str:
+    if score >= 20:
+        return "critical"
+    if score >= 15:
+        return "high"
+    if score >= 8:
+        return "medium"
+    if score >= 4:
+        return "low"
+    return "informational"
+
+
+def build_finding(
+    finding_id: str,
+    title: str,
+    likelihood: int,
+    impact: int,
+    evidence: str = "",
+    recommendation: str = "",
+) -> Finding:
+    score = calculate_risk(likelihood, impact)
+    return Finding(
+        finding_id,
+        title,
+        severity_from_score(score),
+        likelihood,
+        impact,
+        evidence,
+        recommendation,
+    )
