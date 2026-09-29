@@ -1,0 +1,84 @@
+{
+  "version": "0.2",
+  "framework": "HearSec Control Framework",
+  "controls": [
+    {
+      "id": "AC-01",
+      "domain": "Access Control",
+      "control": "Authentication and authorization",
+      "evidence": [
+        "account controls",
+        "pairing/authorization behavior",
+        "role/access documentation"
+      ]
+    },
+    {
+      "id": "CM-01",
+      "domain": "Configuration",
+      "control": "Secure device and application configuration",
+      "evidence": [
+        "configuration options",
+        "security-relevant defaults",
+        "firmware/app version"
+      ]
+    },
+    {
+      "id": "DP-01",
+      "domain": "Data Protection",
+      "control": "Protection of sensitive data in storage and transit",
+      "evidence": [
+        "storage protection",
+        "transport protection",
+        "data categories"
+      ]
+    },
+    {
+      "id": "PR-01",
+      "domain": "Privacy",
+      "control": "Data minimization and purpose limitation",
+      "evidence": [
+        "data inventory",
+        "permissions",
+        "privacy documentation"
+      ]
+    },
+    {
+      "id": "SC-01",
+      "domain": "Secure Communication",
+      "control": "Protected communication between system components",
+      "evidence": [
+        "BLE pairing observations",
+        "transport security documentation"
+      ]
+    },
+    {
+      "id": "VM-01",
+      "domain": "Vulnerability Management",
+      "control": "Documented vulnerability and update process",
+      "evidence": [
+        "update mechanism",
+        "security advisories",
+        "support lifecycle"
+      ]
+    },
+    {
+      "id": "IR-01",
+      "domain": "Incident Response",
+      "control": "Security issue reporting and response process",
+      "evidence": [
+        "vendor reporting channel",
+        "response documentation"
+      ]
+    },
+    {
+      "id": "SD-01",
+      "domain": "Secure Development",
+      "control": "Security considerations in software/device lifecycle",
+      "evidence": [
+        "security documentation",
+        "threat modeling evidence",
+        "secure-development statements"
+      ]
+    }
+  ]
+}
