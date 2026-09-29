@@ -1,56 +1,41 @@
 # HearSec
 
-HearSec is a cybersecurity and privacy assessment framework for connected hearing technology.
+**HearSec is a defensive security and privacy assessment framework for connected hearing technology.**
 
-## Scope
+## Complete software workflow
 
-HearSec maps the hearing-aid–smartphone–cloud ecosystem and provides a structured workflow for documenting:
+HearSec now provides:
 
-- Device and application inventory
-- Bluetooth/BLE communication characteristics
-- Authentication and authorization observations
-- Mobile application permissions
-- Data storage and transmission
-- Privacy/data-flow considerations
-- Threats, assets, mitigations, and risk
-- Assessment evidence and reproducible findings
+- Target/system assessment data model
+- Authorization/scope documentation
+- Asset and threat catalogs
+- Control framework
+- Risk scoring
+- Structured assessment validation
+- Evidence/findings model
+- Markdown report generation
+- Example synthetic assessment
+- Automated tests and CI
+- Research methodology and validation documentation
+- Web UI prototype
 
-HearSec is designed for authorized research and controlled assessment. It is not an exploitation toolkit and must not be used against devices, applications, networks, accounts, or services without explicit permission.
+Run the synthetic assessment report:
 
-## Initial architecture
+    python -m assessment assessment/example_assessment.json
 
-```
-Connected Hearing System
-  ├── Hearing Aid
-  ├── BLE / Wireless Link
-  ├── Smartphone
-  ├── Companion App
-  ├── Local Storage
-  └── Cloud / Clinical Service
-             ↓
-        HearSec Assessment
-             ↓
-   Evidence → Finding → Risk
-             ↓
-          Report
-```
+## Safety boundary
 
-## Project status
+HearSec is for **authorized defensive research and documentation**. It is not an exploitation toolkit. Do not test devices, accounts, networks or services without explicit authorization.
 
-Early research prototype. The initial release focuses on a transparent, auditable assessment workflow before adding any automated technical collection.
+## Validation status
 
-## Planned modules
+The software workflow is implemented. **Empirical security assessment of real hearing technology remains pending** and must be performed only with explicit authorization and appropriate research/data-governance controls.
 
-- assessment/ — assessment data model and logic
-- threat_model/ — assets, threats, mitigations, risk
-- reports/ — human-readable assessment reports
-- ui/ — future web interface
-- docs/ — methodology and research documentation
-- tests/ — automated tests
+Software tests validate HearSec's own logic; they do not prove the security of a third-party hearing device or companion application.
 
-## Ethics & safety
+## Privacy
 
-Only test equipment and software that you own or are explicitly authorized to assess. Avoid collecting real patient information. Prefer synthetic data during development.
+Use synthetic or de-identified data during development. Never commit credentials, patient information, private communications or sensitive vendor vulnerability details.
 
 ## License
 
