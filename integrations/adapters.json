@@ -1,0 +1,74 @@
+{
+  "version": "0.1",
+  "common_fields": [
+    "manufacturer",
+    "model",
+    "serial_number",
+    "firmware_version",
+    "connectivity_path",
+    "app_version",
+    "dsp_evidence",
+    "security_observations"
+  ],
+  "adapters": [
+    {
+      "id": "generic",
+      "manufacturer": "Generic",
+      "status": "available",
+      "source_types": [
+        "manual",
+        "export"
+      ]
+    },
+    {
+      "id": "gn-resound",
+      "manufacturer": "GN / ReSound / Beltone",
+      "status": "planned",
+      "source_types": [
+        "authorized SDK/API",
+        "manufacturer app export",
+        "clinical software export"
+      ]
+    },
+    {
+      "id": "wsa-signia-widex",
+      "manufacturer": "WS Audiology / Signia / Widex",
+      "status": "planned",
+      "source_types": [
+        "authorized SDK/API",
+        "manufacturer app export",
+        "clinical software export"
+      ]
+    },
+    {
+      "id": "demant-oticon",
+      "manufacturer": "Demant / Oticon",
+      "status": "planned",
+      "source_types": [
+        "authorized SDK/API",
+        "manufacturer app export",
+        "clinical software export"
+      ]
+    },
+    {
+      "id": "sonova-phonak",
+      "manufacturer": "Sonova / Phonak",
+      "status": "planned",
+      "source_types": [
+        "authorized SDK/API",
+        "manufacturer app export",
+        "clinical software export"
+      ]
+    },
+    {
+      "id": "starkey",
+      "manufacturer": "Starkey",
+      "status": "planned",
+      "source_types": [
+        "authorized SDK/API",
+        "manufacturer app export",
+        "clinical software export"
+      ]
+    }
+  ]
+}
