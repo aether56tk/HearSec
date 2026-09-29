@@ -1,0 +1,60 @@
+{
+  "version": "0.1",
+  "threats": [
+    {
+      "id": "T01",
+      "name": "Unauthorized access",
+      "description": "An unauthorized party gains access to a protected component or account.",
+      "assets": [
+        "HA",
+        "APP",
+        "CLOUD"
+      ],
+      "controls": [
+        "authentication",
+        "authorization"
+      ]
+    },
+    {
+      "id": "T02",
+      "name": "Sensitive data exposure",
+      "description": "Sensitive hearing-related or user data is exposed through storage or transmission.",
+      "assets": [
+        "PATIENT",
+        "APP",
+        "CLOUD"
+      ],
+      "controls": [
+        "encryption",
+        "data minimization",
+        "access control"
+      ]
+    },
+    {
+      "id": "T03",
+      "name": "Weak pairing or communication protection",
+      "description": "Weaknesses in wireless pairing or communication protections increase exposure.",
+      "assets": [
+        "BLE",
+        "HA"
+      ],
+      "controls": [
+        "secure pairing",
+        "transport protection"
+      ]
+    },
+    {
+      "id": "T04",
+      "name": "Insecure local storage",
+      "description": "Sensitive information is stored locally without appropriate protection.",
+      "assets": [
+        "APP",
+        "PATIENT"
+      ],
+      "controls": [
+        "secure storage",
+        "key management"
+      ]
+    }
+  ]
+}
