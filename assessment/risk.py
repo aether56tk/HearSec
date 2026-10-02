@@ -30,7 +30,7 @@ def _to_score(value: Any, labels: dict[str, int], field: str) -> int | None:
         raise ValueError(f"{field} must be between 1 and 5")
     if isinstance(value, str):
         key = value.strip().lower().replace(" ", "_")
-        if key in {"unknown", "not_rated", "not_assessed", "n/a"}:
+        if key in {"unknown", "not_rated", "not_assessed", "n/a", "low"}:
             return None
         if key in labels:
             return labels[key]
