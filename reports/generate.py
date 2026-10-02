@@ -48,7 +48,7 @@ def render_report(assessment: dict[str, Any]) -> str:
             f"- Evidence: {finding.get('evidence', '')}",
             f"- Likelihood: {risk.get('likelihood', '')}",
             f"- Impact: {risk.get('impact', '')}",
-            f"- Risk score: {calculated["score"] if calculated["score"] is not None else "Not calculated"}",
+            f"- Risk score: {calculated['score'] if calculated['score'] is not None else 'Not calculated'}",
             f"- Risk level: {displayed_level}",
             f"- Recommendation: {finding.get('recommendation', '')}",
             "",
