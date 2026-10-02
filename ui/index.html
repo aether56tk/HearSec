@@ -173,7 +173,22 @@ function generateResearchReport(){const rs=rpRead(),report={title:'HearSec Heari
 function saveProtocolMetadata(){window._protocolMetadata={protocol_version:$('qProtocol').value.trim()||'HEARSEC-DSP-1.0',operator_id:$('qOperator').value.trim()||'PSEUDONYMOUS',trial_number:+$('qTrial').value||1,min_duration_s:+$('qMinDuration').value||3,max_peak_dbfs:+$('qMaxPeak').value,min_correlation:+$('qMinCorr').value,saved_at:new Date().toISOString()};$('qPreview').textContent=JSON.stringify(window._protocolMetadata,null,2)}
 function runQualityGate(){saveProtocolMetadata();const p=window._protocolMetadata,c=window._dspComparison||null,d=window._dsp||null,checks=[];if(!c)checks.push({id:'REC-01',check:'Reference/processed comparison exists',pass:false,reason:'Run a paired DSP comparison first.'});else{checks.push({id:'REC-01',check:'Reference/processed comparison exists',pass:true});checks.push({id:'REC-02',check:'Aligned sample count is positive',pass:c.aligned_samples>0});checks.push({id:'REC-03',check:'Post-alignment correlation threshold',pass:typeof c.post_alignment_correlation==='number'&&c.post_alignment_correlation>=p.min_correlation,value:c.post_alignment_correlation});checks.push({id:'REC-04',check:'Latency is finite',pass:Number.isFinite(c.estimated_latency_ms),value:c.estimated_latency_ms})}if(d){checks.push({id:'REC-05',check:'Duration threshold',pass:!d.duration||d.duration>=p.min_duration_s,value:d.duration});checks.push({id:'REC-06',check:'Peak not clipped',pass:d.peakDbfs===undefined||d.peakDbfs<=p.max_peak_dbfs,value:d.peakDbfs})}checks.push({id:'META-01',check:'Protocol version present',pass:!!p.protocol_version});checks.push({id:'META-02',check:'Operator is pseudonymized',pass:!!p.operator_id&&p.operator_id.length<80});const pass=checks.filter(x=>x.pass).length;window._qualityGate={schema_version:'hearsec-quality-gate-1.0',run_at:new Date().toISOString(),protocol:p,status:pass===checks.length?'PASS':'REVIEW_REQUIRED',passed:pass,total:checks.length,checks};$('qResult').innerHTML='<b>Quality gate:</b> '+window._qualityGate.status+' · '+pass+'/'+checks.length+' checks passed';$('qPreview').textContent=JSON.stringify(window._qualityGate,null,2)}
 
-</script><section class="card" id="securityWorkflow"><h2>🔗 Security Assessment Workflow</h2><div class="small">Linked lifecycle: Asset → Threat → Evidence → Control → Risk → Finding → Report. Browser-local and defensive; it does not exploit or probe third-party devices.</div><div id="wfSteps" class="stats" style="margin-top:12px"></div><div class="row"><button onclick="syncSecurityWorkflow()">Sync assessment</button><button onclick="generateWorkflowSnapshot()">Generate snapshot</button><button class="secondary" onclick="downloadWorkflowSnapshot()">Download JSON</button></div><div id="wfStatus" class="finding">Workflow not synchronised yet.</div><div id="wfMap" class="finding"><b>Relationship map</b><div class="small">Synchronise to build the map.</div></div><pre id="wfSnapshot" style="max-height:340px;overflow:auto;white-space:pre-wrap">No snapshot generated.</pre></section>\n<section class="card" id="v1Quality"><h2>HearSec v1.0 Quality Gate</h2><div class="small">Prevents weak recordings and incomplete research sessions from being silently treated as valid evidence.</div><div class="grid"><div><label>Protocol version</label><input id="qProtocol" value="HEARSEC-DSP-1.0"></div><div><label>Operator / researcher ID</label><input id="qOperator" placeholder="Pseudonymous ID"></div><div><label>Required recording duration (s)</label><input id="qMinDuration" type="number" value="3" min="0.5"></div><div><label>Maximum allowed peak (dBFS)</label><input id="qMaxPeak" type="number" value="-1" max="0"></div><div><label>Minimum acceptable correlation</label><input id="qMinCorr" type="number" value="0.5" min="0" max="1" step="0.05"></div><div><label>Trial number</label><input id="qTrial" type="number" value="1" min="1"></div></div><div class="row"><button onclick="runQualityGate()">Run quality gate</button><button onclick="saveProtocolMetadata()">Save protocol metadata</button></div><div id="qResult" class="finding">No quality gate run.</div><pre id="qPreview" style="max-height:300px;overflow:auto;white-space:pre-wrap">No protocol record.</pre></section>
+</script><section class="card" id="hearingAidConnector">
+<h2>🦻 Hearing Aid Connection</h2>
+<div class="small">Browser-based Bluetooth connection for authorised testing. Web Bluetooth requires a user gesture and browser/OS support; HearSec never bypasses pairing, authentication, or access controls.</div>
+<div class="grid" style="margin-top:12px">
+<div><label>Connection status</label><div id="haConnStatus" class="finding">Not connected.</div></div>
+<div><label>Connected device</label><div id="haConnDevice" class="finding">None selected.</div></div>
+</div>
+<div class="row">
+<button onclick="connectHearingAid()">Connect hearing aid</button>
+<button class="secondary" onclick="discoverHearingAid()">Discover supported services</button>
+<button class="secondary" onclick="disconnectHearingAid()">Disconnect</button>
+</div>
+<div id="haServices" class="finding">No GATT services discovered.</div>
+<div class="small" style="margin-top:10px">Note: Chrome/Edge desktop support Web Bluetooth on compatible platforms. Hearing aids may not expose their proprietary fitting/control interface to generic browser applications.</div>
+</section>
+<section class="card" id="securityWorkflow"><h2>🔗 Security Assessment Workflow</h2><div class="small">Linked lifecycle: Asset → Threat → Evidence → Control → Risk → Finding → Report. Browser-local and defensive; it does not exploit or probe third-party devices.</div><div id="wfSteps" class="stats" style="margin-top:12px"></div><div class="row"><button onclick="syncSecurityWorkflow()">Sync assessment</button><button onclick="generateWorkflowSnapshot()">Generate snapshot</button><button class="secondary" onclick="downloadWorkflowSnapshot()">Download JSON</button></div><div id="wfStatus" class="finding">Workflow not synchronised yet.</div><div id="wfMap" class="finding"><b>Relationship map</b><div class="small">Synchronise to build the map.</div></div><pre id="wfSnapshot" style="max-height:340px;overflow:auto;white-space:pre-wrap">No snapshot generated.</pre></section>\n<section class="card" id="v1Quality"><h2>HearSec v1.0 Quality Gate</h2><div class="small">Prevents weak recordings and incomplete research sessions from being silently treated as valid evidence.</div><div class="grid"><div><label>Protocol version</label><input id="qProtocol" value="HEARSEC-DSP-1.0"></div><div><label>Operator / researcher ID</label><input id="qOperator" placeholder="Pseudonymous ID"></div><div><label>Required recording duration (s)</label><input id="qMinDuration" type="number" value="3" min="0.5"></div><div><label>Maximum allowed peak (dBFS)</label><input id="qMaxPeak" type="number" value="-1" max="0"></div><div><label>Minimum acceptable correlation</label><input id="qMinCorr" type="number" value="0.5" min="0" max="1" step="0.05"></div><div><label>Trial number</label><input id="qTrial" type="number" value="1" min="1"></div></div><div class="row"><button onclick="runQualityGate()">Run quality gate</button><button onclick="saveProtocolMetadata()">Save protocol metadata</button></div><div id="qResult" class="finding">No quality gate run.</div><pre id="qPreview" style="max-height:300px;overflow:auto;white-space:pre-wrap">No protocol record.</pre></section>
 
 <section class="card" id="researchPlatform"><h2>Research & Device Management Platform</h2><div class="small">Local browser workspace for multiple device records, longitudinal history, evidence provenance, comparison, audit logging, privacy-aware exports, and research reporting.</div><div class="grid"><div><label>Device record ID</label><input id="rpRecordId" placeholder="e.g. HA-001"></div><div><label>Research status</label><select id="rpResearchStatus"><option>Active</option><option>Baseline</option><option>Follow-up</option><option>Completed</option><option>Archived</option></select></div><div><label>Evidence confidence</label><select id="rpConfidence"><option>High</option><option>Moderate</option><option>Low</option><option>Unknown</option></select></div><div><label>Evidence source</label><input id="rpSource" placeholder="FDA / manufacturer / label / measurement"></div><div><label>Evidence note</label><input id="rpEvidenceNote" placeholder="What does this evidence support?"></div><div><label>History event</label><input id="rpHistoryEvent" placeholder="Firmware update / fitting / service / DSP test"></div></div><div class="row"><label><input id="rpPrivacy" type="checkbox" onchange="setPrivacyMode(this.checked)"> Privacy/de-identification mode</label></div><div class="row"><button onclick="saveResearchRecord()">Save device snapshot</button><button onclick="addResearchHistory()">Add history event</button><button onclick="runPlatformAudit()">Run platform audit</button></div><div id="rpStatus" class="finding">No research record saved.</div><div class="grid"><div><label>Compare device A</label><select id="rpCompareA"></select></div><div><label>Compare device B</label><select id="rpCompareB"></select></div></div><div class="row"><button onclick="compareStoredDevices()">Compare selected devices</button><button onclick="exportDeviceDataset()">Export dataset CSV</button><button onclick="generateResearchReport()">Generate research report</button></div><div id="rpCompare" class="finding">No comparison performed.</div><div id="rpAudit" class="finding">No platform audit performed.</div><pre id="rpReport" style="max-height:380px;overflow:auto;white-space:pre-wrap">No report generated.</pre></section>
 
@@ -226,4 +241,44 @@ function syncSecurityWorkflow(){
 function generateWorkflowSnapshot(){var w=window._assessmentWorkflow&&window._assessmentWorkflow.synced_at?window._assessmentWorkflow:syncSecurityWorkflow();window._workflowSnapshot={schema_version:'hearsec-assessment-snapshot-1.0',generated_at:new Date().toISOString(),safety_boundary:'Defensive, authorised assessment only. Untested devices are not classified as vulnerable or secure.',assessment:w};document.getElementById('wfSnapshot').textContent=JSON.stringify(window._workflowSnapshot,null,2);return window._workflowSnapshot}
 function downloadWorkflowSnapshot(){var s=window._workflowSnapshot||generateWorkflowSnapshot(),b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='hearsec-assessment-snapshot-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(u)},1000)}
 document.addEventListener('DOMContentLoaded',function(){setTimeout(syncSecurityWorkflow,150)});
+<script>
+window._hearingAidConnection=window._hearingAidConnection||{status:'disconnected',device:null,services:[]};
+function haStatus(msg){var e=document.getElementById('haConnStatus');if(e)e.textContent=msg}
+function connectHearingAid(){
+ if(!navigator.bluetooth){haStatus('Web Bluetooth is not available in this browser.');return}
+ haStatus('Choose an authorised Bluetooth hearing device in the browser dialog…');
+ navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['battery_service','device_information']}).then(function(device){
+  window._hearingAidConnection.device=device;
+  window._hearingAidConnection.status='selected';
+  var n=document.getElementById('haConnDevice');if(n)n.textContent=(device.name||'Unnamed Bluetooth device')+' · '+(device.id||'ID unavailable');
+  device.addEventListener('gattserverdisconnected',function(){window._hearingAidConnection.status='disconnected';haStatus('Disconnected.');});
+  return device.gatt.connect();
+ }).then(function(server){
+  window._hearingAidConnection.server=server;
+  window._hearingAidConnection.status='connected';
+  haStatus('Connected. Ready for authorised service discovery.');
+  return discoverHearingAid();
+ }).catch(function(err){
+  if(err&&err.name==='NotFoundError')haStatus('No device selected.');
+  else haStatus('Connection not completed: '+(err&&err.message?err.message:'browser error'));
+ });
+}
+async function discoverHearingAid(){
+ var x=window._hearingAidConnection;
+ if(!x.server){haStatus('Connect a device first.');return}
+ try{
+  var services=await x.server.getPrimaryServices();
+  x.services=services.map(function(s){return{id:s.uuid,primary:s.isPrimary}});
+  var e=document.getElementById('haServices');
+  e.innerHTML='<b>Discovered primary services: '+services.length+'</b><div class="small">'+(x.services.map(function(s){return s.id}).join('<br>')||'None exposed')+'</div>';
+  haStatus('Connected · service discovery complete.');
+ }catch(err){haStatus('Connected, but service discovery was not available: '+(err.message||'browser error'))}
+}
+function disconnectHearingAid(){
+ var x=window._hearingAidConnection;
+ try{if(x.device&&x.device.gatt&&x.device.gatt.connected)x.device.gatt.disconnect()}catch(e){}
+ x.status='disconnected';x.server=null;x.services=[];
+ haStatus('Disconnected.');
+ var e=document.getElementById('haServices');if(e)e.textContent='No GATT services discovered.';
+}
 </script></body></html>
