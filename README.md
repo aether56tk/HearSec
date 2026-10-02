@@ -1,8 +1,8 @@
 # HearSec
 
-**Defensive security, privacy and evidence-assessment framework for connected hearing technology.**
+**Evidence-grounded, AI-assisted cybersecurity and privacy assessment framework for connected hearing-aid ecosystems.**
 
-HearSec is a browser + Python research platform for documenting and assessing the security and privacy posture of connected hearing ecosystems. It connects **hearing-aid/device metadata, authorised browser Bluetooth observations, threat modelling, evidence, controls, transparent risk assessment, validation and reporting** into one workflow.
+HearSec is a browser + Python research platform for documenting and assessing the security and privacy posture of connected hearing-aid ecosystems. Its research purpose is to make assessment more consistent, reproducible, traceable and clinically interpretable. It connects **hearing-aid/device metadata, authorised browser Bluetooth observations, threat modelling, evidence, controls, transparent risk assessment, validation and reporting** into one workflow.
 
 > **Important:** HearSec is an assessment and evidence platform — not an exploitation toolkit. An observed device, Bluetooth service or missing control is **not automatically a vulnerability**.
 
@@ -174,7 +174,7 @@ They do **not** prove that:
 
 Real-device findings require separate authorised research and evidence.
 
-## 🔬 Research methodology
+## 🔬 Research purpose and methodology\n\nThe research question is:\n\n> Can an evidence-grounded, AI-assisted framework provide a reliable, reproducible and clinically interpretable method for assessing cybersecurity and privacy risks across connected and AI-enabled hearing-aid ecosystems?\n\nThe study is organized into framework validation, authorized ecosystem assessment, AI evidence validation and inter-rater reliability. See [Research purpose](docs/RESEARCH_PURPOSE.md) and [AI evidence method](docs/AI_EVIDENCE_METHOD.md).\n\n
 
 A typical authorised assessment follows:
 
@@ -254,7 +254,7 @@ HearSec/
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Assessment workflow](docs/ASSESSMENT_WORKFLOW.md)
-- [Methodology](docs/METHODOLOGY.md)
+- [Methodology](docs/METHODOLOGY.md)\n- [Research purpose](docs/RESEARCH_PURPOSE.md)\n- [AI evidence method](docs/AI_EVIDENCE_METHOD.md)
 - [Research validation](docs/RESEARCH_VALIDATION.md)
 - [Validation status](VALIDATION_STATUS.md)
 - [Security policy](SECURITY.md)
@@ -283,7 +283,7 @@ For Web Bluetooth, use a compatible browser/environment and a secure context as 
 
 ## 📌 Project status
 
-**Current focus:** turning HearSec into a reproducible hearing-technology security research platform.
+**Current focus:** a reproducible, evidence-grounded and AI-assisted hearing-technology cybersecurity research platform.
 
 Implemented areas include:
 - assessment/risk engine;
