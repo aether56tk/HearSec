@@ -188,6 +188,20 @@ function runQualityGate(){saveProtocolMetadata();const p=window._protocolMetadat
 <div id="haServices" class="finding">No GATT services discovered.</div>
 <div class="small" style="margin-top:10px">Note: Chrome/Edge desktop support Web Bluetooth on compatible platforms. Hearing aids may not expose their proprietary fitting/control interface to generic browser applications.</div>
 </section>
+<section class="card" id="liveDeviceIntelligence">
+<h2>⚡ Live Device → Assessment Bridge</h2>
+<div class="small">Automatically turns the authorised browser connection into an assessment asset, records exposed GATT metadata as evidence, and refreshes the workflow. No proprietary control commands are sent.</div>
+<div class="grid" style="margin-top:12px">
+<div class="finding"><b>Live asset</b><div id="liveAssetName" class="small">Not connected.</div></div>
+<div class="finding"><b>GATT evidence</b><div id="liveGattEvidence" class="small">No services recorded.</div></div>
+<div class="finding"><b>Assessment state</b><div id="liveAssessmentState" class="small">Waiting for connection.</div></div>
+</div>
+<div class="row">
+<button onclick="syncLiveDeviceAssessment()">Sync connected device</button>
+<button class="secondary" onclick="clearLiveDeviceAssessment()">Clear live assessment</button>
+</div>
+<pre id="liveDeviceSnapshot" style="max-height:300px;overflow:auto;white-space:pre-wrap">No live snapshot.</pre>
+</section>
 <section class="card" id="securityWorkflow"><h2>🔗 Security Assessment Workflow</h2><div class="small">Linked lifecycle: Asset → Threat → Evidence → Control → Risk → Finding → Report. Browser-local and defensive; it does not exploit or probe third-party devices.</div><div id="wfSteps" class="stats" style="margin-top:12px"></div><div class="row"><button onclick="syncSecurityWorkflow()">Sync assessment</button><button onclick="generateWorkflowSnapshot()">Generate snapshot</button><button class="secondary" onclick="downloadWorkflowSnapshot()">Download JSON</button></div><div id="wfStatus" class="finding">Workflow not synchronised yet.</div><div id="wfMap" class="finding"><b>Relationship map</b><div class="small">Synchronise to build the map.</div></div><pre id="wfSnapshot" style="max-height:340px;overflow:auto;white-space:pre-wrap">No snapshot generated.</pre></section>\n<section class="card" id="v1Quality"><h2>HearSec v1.0 Quality Gate</h2><div class="small">Prevents weak recordings and incomplete research sessions from being silently treated as valid evidence.</div><div class="grid"><div><label>Protocol version</label><input id="qProtocol" value="HEARSEC-DSP-1.0"></div><div><label>Operator / researcher ID</label><input id="qOperator" placeholder="Pseudonymous ID"></div><div><label>Required recording duration (s)</label><input id="qMinDuration" type="number" value="3" min="0.5"></div><div><label>Maximum allowed peak (dBFS)</label><input id="qMaxPeak" type="number" value="-1" max="0"></div><div><label>Minimum acceptable correlation</label><input id="qMinCorr" type="number" value="0.5" min="0" max="1" step="0.05"></div><div><label>Trial number</label><input id="qTrial" type="number" value="1" min="1"></div></div><div class="row"><button onclick="runQualityGate()">Run quality gate</button><button onclick="saveProtocolMetadata()">Save protocol metadata</button></div><div id="qResult" class="finding">No quality gate run.</div><pre id="qPreview" style="max-height:300px;overflow:auto;white-space:pre-wrap">No protocol record.</pre></section>
 
 <section class="card" id="researchPlatform"><h2>Research & Device Management Platform</h2><div class="small">Local browser workspace for multiple device records, longitudinal history, evidence provenance, comparison, audit logging, privacy-aware exports, and research reporting.</div><div class="grid"><div><label>Device record ID</label><input id="rpRecordId" placeholder="e.g. HA-001"></div><div><label>Research status</label><select id="rpResearchStatus"><option>Active</option><option>Baseline</option><option>Follow-up</option><option>Completed</option><option>Archived</option></select></div><div><label>Evidence confidence</label><select id="rpConfidence"><option>High</option><option>Moderate</option><option>Low</option><option>Unknown</option></select></div><div><label>Evidence source</label><input id="rpSource" placeholder="FDA / manufacturer / label / measurement"></div><div><label>Evidence note</label><input id="rpEvidenceNote" placeholder="What does this evidence support?"></div><div><label>History event</label><input id="rpHistoryEvent" placeholder="Firmware update / fitting / service / DSP test"></div></div><div class="row"><label><input id="rpPrivacy" type="checkbox" onchange="setPrivacyMode(this.checked)"> Privacy/de-identification mode</label></div><div class="row"><button onclick="saveResearchRecord()">Save device snapshot</button><button onclick="addResearchHistory()">Add history event</button><button onclick="runPlatformAudit()">Run platform audit</button></div><div id="rpStatus" class="finding">No research record saved.</div><div class="grid"><div><label>Compare device A</label><select id="rpCompareA"></select></div><div><label>Compare device B</label><select id="rpCompareB"></select></div></div><div class="row"><button onclick="compareStoredDevices()">Compare selected devices</button><button onclick="exportDeviceDataset()">Export dataset CSV</button><button onclick="generateResearchReport()">Generate research report</button></div><div id="rpCompare" class="finding">No comparison performed.</div><div id="rpAudit" class="finding">No platform audit performed.</div><pre id="rpReport" style="max-height:380px;overflow:auto;white-space:pre-wrap">No report generated.</pre></section>
@@ -280,5 +294,28 @@ function disconnectHearingAid(){
  x.status='disconnected';x.server=null;x.services=[];
  haStatus('Disconnected.');
  var e=document.getElementById('haServices');if(e)e.textContent='No GATT services discovered.';
+}
+<script>
+window._liveDeviceEvidence=window._liveDeviceEvidence||null;
+function syncLiveDeviceAssessment(){
+ var x=window._hearingAidConnection||{},d=x.device;
+ if(!d){document.getElementById('liveAssessmentState').textContent='No browser-connected device.';return null}
+ var services=Array.isArray(x.services)?x.services:[];
+ var asset={id:'live-asset-'+(d.id||'unknown'),name:d.name||'Unnamed Bluetooth hearing device',bluetooth_id:d.id||'unavailable',connection_status:x.status||'unknown',services:services.map(function(s){return s.id||s.uuid})};
+ var evidence={type:'browser_gatt_discovery',captured_at:new Date().toISOString(),device_name:asset.name,device_id:asset.bluetooth_id,service_count:services.length,services:asset.services,provenance:'Directly observed by HearSec Web Bluetooth session',limitations:['Service visibility depends on browser and device permissions.','Observed GATT services do not prove a vulnerability or security strength.','No proprietary control or authentication-bypass operation was performed.']};
+ window._liveDeviceEvidence={asset:asset,evidence:evidence};
+ document.getElementById('liveAssetName').textContent=asset.name+' · '+asset.connection_status;
+ document.getElementById('liveGattEvidence').textContent=services.length+' primary GATT service(s) observed.';
+ document.getElementById('liveAssessmentState').textContent='Live evidence captured · ready for workflow sync.';
+ document.getElementById('liveDeviceSnapshot').textContent=JSON.stringify(window._liveDeviceEvidence,null,2);
+ if(typeof syncSecurityWorkflow==='function')syncSecurityWorkflow();
+ return window._liveDeviceEvidence;
+}
+function clearLiveDeviceAssessment(){
+ window._liveDeviceEvidence=null;
+ document.getElementById('liveAssetName').textContent='Not connected.';
+ document.getElementById('liveGattEvidence').textContent='No services recorded.';
+ document.getElementById('liveAssessmentState').textContent='Waiting for connection.';
+ document.getElementById('liveDeviceSnapshot').textContent='No live snapshot.';
 }
 </script></body></html>
