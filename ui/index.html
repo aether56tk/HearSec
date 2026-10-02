@@ -32,6 +32,17 @@ body>header,body>main,body>section.card:not(#researchWorkspace){display:none!imp
 <div class="stage"><div><b>01</b>Import</div><div><b>02</b>Analyse</div><div><b>03</b>Report</div></div>
 </div>
 
+<div class="research-card" id="serialIntake">
+<h2>🆔 Start with Serial Number</h2>
+<p class="mini">No photo recognition is required. Enter the hearing-aid serial number or a de-identified research code. HearSec uses it as the assessment record identifier.</p>
+<div class="research-grid">
+<div><label>Serial number / research code</label><input id="intakeSerial" placeholder="e.g. SN-XXXX-XXXX" autocomplete="off"></div>
+<div><label>Side</label><select id="intakeSide"><option>Unknown / not specified</option><option>Left</option><option>Right</option><option>Binaural / pair</option></select></div>
+</div>
+<div class="row"><button class="primary" onclick="startSerialAssessment()">Start assessment</button><button class="secondary" onclick="clearSerialAssessment()">Clear</button></div>
+<div id="serialStatus" class="status">No serial number entered.</div>
+</div>
+
 <div class="research-card">
 <h2>📥 1. Import Assessment</h2>
 <p class="mini">Load a HearSec JSON assessment exported from the assessment workflow or another authorised assessment record. Nothing is uploaded to a server.</p>
@@ -459,4 +470,14 @@ function generateAnalysisReport(){
 function downloadAnalysisReport(){
  var r=window._analysisReport||generateAnalysisReport();if(!r)return;var b=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='hearsec-assessment-report-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(u)},1000)
 }
+</script><script>
+window._serialAssessment=window._serialAssessment||null;
+function startSerialAssessment(){
+ var serial=document.getElementById('intakeSerial').value.trim(),side=document.getElementById('intakeSide').value;
+ if(!serial){document.getElementById('serialStatus').textContent='Enter a serial number or research code first.';return}
+ window._serialAssessment={record_id:'HS-'+Date.now(),serial:serial,side:side,created_at:new Date().toISOString()};
+ document.getElementById('serialStatus').innerHTML='<b>Assessment started.</b> Record: '+window._serialAssessment.record_id+' · Serial: '+serial+' · Side: '+side;
+ localStorage.setItem('hearsec_serial_assessment_v1',JSON.stringify(window._serialAssessment));
+}
+function clearSerialAssessment(){window._serialAssessment=null;document.getElementById('intakeSerial').value='';document.getElementById('serialStatus').textContent='No serial number entered.';localStorage.removeItem('hearsec_serial_assessment_v1')}
 </script></script></body></html>
