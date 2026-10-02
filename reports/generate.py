@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from assessment.risk import assess_risk, summarize_findings
+
 
 def render_report(assessment: dict[str, Any]) -> str:
     lines = [
@@ -34,19 +36,32 @@ def render_report(assessment: dict[str, Any]) -> str:
     lines.extend(["", "## 3. Findings"])
     for finding in assessment.get("findings", []):
         risk = finding.get("risk", {})
+        calculated = assess_risk(risk.get("likelihood"), risk.get("impact"))
+        displayed_level = risk.get("level", "")
+        if calculated["score"] is not None:
+            displayed_level = calculated["level"]
+        else:
+            displayed_level = displayed_level or "not_rated"
         lines.extend([
             f"### {finding.get('id', '')} — {finding.get('title', '')}",
             f"- Category: {finding.get('category', '')}",
             f"- Evidence: {finding.get('evidence', '')}",
             f"- Likelihood: {risk.get('likelihood', '')}",
             f"- Impact: {risk.get('impact', '')}",
-            f"- Risk level: {risk.get('level', '')}",
+            f"- Risk score: {calculated["score"] if calculated["score"] is not None else "Not calculated"}",
+            f"- Risk level: {displayed_level}",
             f"- Recommendation: {finding.get('recommendation', '')}",
             "",
         ])
 
+    summary = summarize_findings(assessment.get("findings", []))
     lines.extend([
-        "## 4. Limitations",
+        "## 4. Risk summary",
+        f"- Total findings: {summary['total']}",
+        f"- Rated findings: {summary['rated']}",
+        f"- Not rated: {summary['not_rated']}",
+        "",
+        "## 5. Limitations",
         "This report reflects only documented evidence within the assessment scope. "
         "It does not imply exploitation, penetration testing, vendor confirmation, "
         "or clinical validation unless separately documented.",
