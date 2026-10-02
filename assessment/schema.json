@@ -1,55 +1,44 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "HearSec Assessment",
+  "title": "HearSec Hearing Technology Assessment",
   "type": "object",
-  "required": [
-    "assessment_id",
-    "target",
-    "date",
-    "findings"
-  ],
+  "required": ["assessment_id", "target", "date", "findings"],
   "properties": {
-    "assessment_id": {
-      "type": "string"
-    },
-    "date": {
-      "type": "string",
-      "format": "date"
-    },
+    "assessment_id": {"type": "string"},
+    "date": {"type": "string", "format": "date"},
     "authorization": {
       "type": "object",
       "properties": {
-        "scope": {
-          "type": "string"
-        },
-        "authorized_by": {
-          "type": "string"
-        }
+        "scope": {"type": "string"},
+        "authorized_by": {"type": "string"},
+        "testing_window": {"type": "string"},
+        "data_handling": {"type": "string"}
       }
     },
     "target": {
       "type": "object",
-      "required": [
-        "device_type"
-      ],
+      "required": ["device_type"],
       "properties": {
-        "device_type": {
-          "type": "string"
-        },
-        "model": {
-          "type": "string"
-        },
-        "firmware": {
-          "type": "string"
-        },
-        "companion_app": {
-          "type": "string"
-        },
-        "app_version": {
-          "type": "string"
-        },
-        "platform": {
-          "type": "string"
+        "device_type": {"type": "string"},
+        "manufacturer": {"type": "string"},
+        "model": {"type": "string"},
+        "serial_number": {"type": "string"},
+        "firmware": {"type": "string"},
+        "companion_app": {"type": "string"},
+        "app_version": {"type": "string"},
+        "platform": {"type": "string"},
+        "clinical_software": {"type": "string"},
+        "connectivity": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "security_domains": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": "string"}
         }
       }
     },
@@ -57,23 +46,44 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "source",
-          "destination"
-        ],
+        "required": ["source", "destination"],
         "properties": {
-          "source": {
-            "type": "string"
-          },
-          "destination": {
-            "type": "string"
-          },
-          "data_category": {
-            "type": "string"
-          },
-          "protection": {
-            "type": "string"
-          }
+          "source": {"type": "string"},
+          "destination": {"type": "string"},
+          "data_category": {"type": "string"},
+          "protection": {"type": "string"},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "description"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"type": "string"},
+          "description": {"type": "string"},
+          "source": {"type": "string"},
+          "observed_at": {"type": "string"},
+          "method": {"type": "string"},
+          "provenance": {"type": "string"},
+          "reproducible": {"type": "boolean"}
+        }
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "status"],
+        "properties": {
+          "id": {"type": "string"},
+          "category": {"type": "string"},
+          "status": {"type": "string"},
+          "description": {"type": "string"},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}}
         }
       }
     },
@@ -81,66 +91,42 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "id",
-          "category",
-          "title",
-          "evidence",
-          "risk"
-        ],
+        "required": ["id", "category", "title", "evidence", "risk"],
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "evidence": {
-            "type": "string"
-          },
+          "id": {"type": "string"},
+          "category": {"type": "string"},
+          "title": {"type": "string"},
+          "evidence": {"type": "string"},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}},
           "risk": {
             "type": "object",
-            "required": [
-              "likelihood",
-              "impact"
-            ],
+            "required": ["likelihood", "impact"],
             "properties": {
               "likelihood": {
                 "oneOf": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 5
-                  },
-                  {
-                    "type": "string"
-                  }
+                  {"type": "integer", "minimum": 1, "maximum": 5},
+                  {"type": "string"}
                 ]
               },
               "impact": {
                 "oneOf": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 5
-                  },
-                  {
-                    "type": "string"
-                  }
+                  {"type": "integer", "minimum": 1, "maximum": 5},
+                  {"type": "string"}
                 ]
               },
-              "level": {
-                "type": "string"
-              }
+              "level": {"type": "string"}
             }
           },
-          "recommendation": {
-            "type": "string"
-          }
+          "recommendation": {"type": "string"}
         }
+      }
+    },
+    "assessment_notes": {
+      "type": "object",
+      "properties": {
+        "known": {"type": "array", "items": {"type": "string"}},
+        "unknown": {"type": "array", "items": {"type": "string"}},
+        "limitations": {"type": "array", "items": {"type": "string"}}
       }
     }
   }
