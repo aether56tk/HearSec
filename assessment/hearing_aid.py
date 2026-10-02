@@ -48,7 +48,8 @@ EVIDENCE_TYPES = (
 
 
 def _present(value: Any) -> bool:
-    return value is not None and str(value).strip() not in {"", "unknown", "not_assessed", "n/a"}
+    normalized = "" if value is None else str(value).strip().casefold()
+    return normalized not in {"", "unknown", "not_assessed", "n/a", "na"}
 
 
 def completeness_report(assessment: dict[str, Any]) -> dict[str, Any]:
@@ -57,7 +58,10 @@ def completeness_report(assessment: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(target, dict):
         target = {}
 
-    missing_target = [field for field in REQUIRED_TARGET_FIELDS if not _present(target.get(field))]
+    missing_target = [
+        field for field in REQUIRED_TARGET_FIELDS
+        if not _present(target.get(field))
+    ]
 
     evidence = assessment.get("evidence", [])
     if not isinstance(evidence, list):
@@ -71,7 +75,7 @@ def completeness_report(assessment: dict[str, Any]) -> dict[str, Any]:
         domain for domain in ASSESSMENT_DOMAINS
         if isinstance(domains.get(domain), dict)
         and _present(domains[domain].get("status"))
-        and str(domains[domain].get("status")).lower() != "not_assessed"
+        and str(domains[domain].get("status")).strip().casefold() != "not_assessed"
     ]
 
     return {
@@ -81,7 +85,9 @@ def completeness_report(assessment: dict[str, Any]) -> dict[str, Any]:
         "evidence_records": len(evidence),
         "domains_total": len(ASSESSMENT_DOMAINS),
         "domains_assessed": len(assessed_domains),
-        "unassessed_domains": [d for d in ASSESSMENT_DOMAINS if d not in assessed_domains],
+        "unassessed_domains": [
+            d for d in ASSESSMENT_DOMAINS if d not in assessed_domains
+        ],
         "coverage_status": (
             "complete"
             if not missing_target and len(assessed_domains) == len(ASSESSMENT_DOMAINS)
@@ -124,6 +130,7 @@ def analyze_assessment(assessment: dict[str, Any]) -> dict[str, Any]:
             impact_i = int(impact)
         except (TypeError, ValueError):
             likelihood_i = impact_i = 0
+
         if 1 <= likelihood_i <= 5 and 1 <= impact_i <= 5:
             score = likelihood_i * impact_i
             rated += 1
