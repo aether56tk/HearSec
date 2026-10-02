@@ -4,8 +4,130 @@
 <style>
 :root{--bg:#080d19;--card:#111a2d;--line:#263653;--text:#edf3ff;--muted:#94a4c3;--accent:#7c8cff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,Segoe UI,sans-serif}header{padding:24px 5%;border-bottom:1px solid var(--line);background:#0d1425}header h1{margin:0;font-size:28px}main{max-width:1180px;margin:auto;padding:24px 5%}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.layout{display:grid;grid-template-columns:2fr 1fr;gap:18px}@media(max-width:800px){.layout{grid-template-columns:1fr}}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}h2,h3{margin-top:0}label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}input,select,textarea{width:100%;padding:10px;border:1px solid #344565;border-radius:8px;background:#09101f;color:var(--text)}textarea{min-height:75px}button{padding:10px 14px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.secondary{background:#263653}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#263653;color:#cbd6ef;font-size:11px}.finding{padding:12px;border:1px solid var(--line);border-radius:10px;margin-top:10px}.risk{font-weight:800}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0b1324;padding:12px;border-radius:9px}.stat b{font-size:22px;display:block}.danger{color:#ffb4b4}.good{color:#b9f0ca}pre{white-space:pre-wrap;overflow:auto;background:#070b14;padding:12px;border-radius:9px;max-height:420px}.flow{font-size:13px}.small{font-size:12px;color:var(--muted)}
-</style></head>
-<body><section class="card" id="validationLab"><h2>Validation & Quality-Control Lab</h2><div class="small">Runs deterministic checks on the current HearSec record. Validation status measures data integrity and workflow completeness; it is not a clinical or device-safety rating.</div><div class="row"><button onclick="runValidation()">Run validation</button><button onclick="loadSyntheticDevice()">Load synthetic test device</button><button onclick="downloadValidationReport()">Download validation JSON</button></div><div id="validationResult" class="finding">No validation run.</div><pre id="validationPreview" style="max-height:320px;overflow:auto;white-space:pre-wrap">No report generated.</pre></section>
+<style>
+/* HearSec Research Workspace — simplified one-page research UI */
+body>header,body>main,body>section.card:not(#researchWorkspace){display:none!important}
+#researchWorkspace{display:block!important;max-width:1180px;margin:0 auto;padding:28px 22px}
+#researchWorkspace .hero{background:linear-gradient(135deg,#111a2d,#182846);border:1px solid #304361;border-radius:18px;padding:26px;margin-bottom:18px}
+#researchWorkspace .hero h1{font-size:34px;margin:0 0 6px}
+#researchWorkspace .hero p{max-width:850px;color:#b8c5df;line-height:1.6}
+#researchWorkspace .stage{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}
+#researchWorkspace .stage div{padding:12px;border:1px solid #2b3c5a;border-radius:10px;background:#0d1628;text-align:center;font-size:12px}
+#researchWorkspace .stage b{display:block;font-size:15px;margin-bottom:4px}
+#researchWorkspace .research-card{background:#111a2d;border:1px solid #263653;border-radius:14px;padding:18px;margin-bottom:16px}
+#researchWorkspace .research-card h2{margin:0 0 8px}
+#researchWorkspace .research-card h3{margin:16px 0 8px;font-size:14px}
+#researchWorkspace .research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+#researchWorkspace textarea{min-height:90px}
+#researchWorkspace .status{padding:12px;border:1px solid #304361;border-radius:10px;background:#0b1324;margin-top:10px}
+#researchWorkspace .mini{font-size:11px;color:#94a4c3}
+#researchWorkspace .primary{background:#7c8cff}
+@media(max-width:800px){#researchWorkspace .stage{grid-template-columns:1fr 1fr}#researchWorkspace{padding:16px}}
+</style></style></head>
+<body><section id="researchWorkspace">
+<div class="hero">
+<div class="mini">HEARSEC · RESEARCH WORKSPACE · v1</div>
+<h1>Connected Hearing Technology Security Research</h1>
+<p><b>Research aim:</b> systematically document what security, privacy and connectivity evidence can be observed across a hearing-aid ecosystem, then map those observations to threats, controls and research findings.</p>
+<div class="stage">
+<div><b>01</b>Study design</div><div><b>02</b>Device</div><div><b>03</b>Evidence</div><div><b>04</b>Analysis</div><div><b>05</b>Report</div>
+</div>
+</div>
+
+<div class="research-card">
+<h2>🔬 1. Research Study</h2>
+<div class="research-grid">
+<div><label>Study title</label><input id="researchTitle" value="Security and Privacy Assessment of Connected Hearing Technology"></div>
+<div><label>Study ID</label><input id="researchId" placeholder="HEARSEC-2026-001"></div>
+<div><label>Study design</label><select id="researchDesign"><option>Exploratory observational study</option><option>Descriptive technical assessment</option><option>Comparative device study</option><option>Method-development study</option></select></div>
+<div><label>Target population / device group</label><input id="researchPopulation" placeholder="Connected hearing aids / companion ecosystems"></div>
+</div>
+<label style="margin-top:12px">Research question</label>
+<textarea id="researchQuestion">What security and privacy characteristics can be documented from the observable interfaces of connected hearing technology, and how can these observations be systematically mapped to threats, controls and evidence?</textarea>
+<div class="research-grid" style="margin-top:12px">
+<div><label>Primary objective</label><textarea id="researchObjective">Develop and validate a reproducible evidence-based assessment workflow for connected hearing technology.</textarea></div>
+<div><label>Hypothesis / expectation</label><textarea id="researchHypothesis">A structured evidence-first workflow can improve consistency and reproducibility of security and privacy assessment across connected hearing-device ecosystems.</textarea></div>
+</div>
+<div class="row"><button class="primary" onclick="saveResearchStudy()">Save study protocol</button><button class="secondary" onclick="loadResearchStudy()">Load saved protocol</button></div>
+<div id="researchProtocolStatus" class="status">No study protocol saved in this browser.</div>
+</div>
+
+<div class="research-card">
+<h2>🦻 2. Device & Authorised Connection</h2>
+<div class="research-grid">
+<div><label>Manufacturer / device</label><input id="device" placeholder="Enter research device"></div>
+<div><label>Model</label><input id="model" placeholder="Model"></div>
+<div><label>Serial / research code</label><input id="serial" placeholder="Use a de-identified code where possible"></div>
+<div><label>Firmware</label><input id="firmware" placeholder="Firmware version"></div>
+</div>
+<label style="margin-top:12px">Authorised research scope</label>
+<textarea id="auth" placeholder="Document the device, software and techniques you are authorised to assess."></textarea>
+<div class="row">
+<button class="primary" onclick="connectHearingAid()">Connect authorised device</button>
+<button class="secondary" onclick="discoverHearingAid()">Discover services</button>
+<button class="secondary" onclick="disconnectHearingAid()">Disconnect</button>
+</div>
+<div class="research-grid">
+<div class="status"><b>Connection</b><div id="haConnStatus">Not connected.</div></div>
+<div class="status"><b>Device</b><div id="haConnDevice">None selected.</div></div>
+</div>
+<div id="haServices" class="status">No GATT services discovered.</div>
+<div class="mini" style="margin-top:8px">The browser requires explicit device selection. Observed services are evidence, not proof of a vulnerability.</div>
+</div>
+
+<div class="research-card">
+<h2>📋 3. Evidence Collection</h2>
+<div class="research-grid">
+<div><label>Evidence source</label><select id="researchEvidenceSource"><option>Browser Bluetooth / GATT observation</option><option>Device label / identity</option><option>Manufacturer documentation</option><option>Regulatory / public source</option><option>DSP / audio measurement</option><option>Clinical / fitting software observation</option></select></div>
+<div><label>Evidence confidence</label><select id="researchEvidenceConfidence"><option>High</option><option>Moderate</option><option>Low</option><option>Unknown</option></select></div>
+</div>
+<label style="margin-top:12px">Observation / evidence note</label>
+<textarea id="researchEvidenceNote" placeholder="Record exactly what was observed, where it came from, and what it does NOT establish."></textarea>
+<div class="row"><button class="primary" onclick="syncLiveDeviceAssessment();saveResearchEvidence()">Capture evidence</button><button class="secondary" onclick="syncLiveDeviceAssessment()">Refresh live observation</button></div>
+<div class="research-grid">
+<div class="status"><b>Live asset</b><div id="liveAssetName">Not connected.</div></div>
+<div class="status"><b>Observed GATT</b><div id="liveGattEvidence">No services recorded.</div></div>
+<div class="status"><b>Evidence state</b><div id="liveAssessmentState">Waiting for connection.</div></div>
+</div>
+<pre id="liveDeviceSnapshot" style="max-height:260px">No live snapshot.</pre>
+</div>
+
+<div class="research-card">
+<h2>🧠 4. Analysis & Findings</h2>
+<div class="research-grid">
+<div><label>Finding category</label><select id="researchFindingCategory"><option>Authentication / authorisation</option><option>Bluetooth / communication</option><option>Privacy / data handling</option><option>Configuration / update</option><option>Clinical software / ecosystem</option><option>Other</option></select></div>
+<div><label>Finding status</label><select id="researchFindingStatus"><option>Open</option><option>Under review</option><option>Resolved</option><option>Not reproducible</option><option>Not rated</option></select></div>
+</div>
+<label style="margin-top:12px">Research finding</label>
+<textarea id="researchFindingNote" placeholder="Describe the documented observation and evidence without overstating what it proves."></textarea>
+<div class="row"><button class="primary" onclick="syncSecurityWorkflow();saveResearchFinding()">Add finding to study</button><button class="secondary" onclick="syncSecurityWorkflow()">Recalculate workflow</button></div>
+<div id="wfSteps" class="stats" style="margin-top:12px"></div>
+<div id="wfStatus" class="status">Workflow not synchronised yet.</div>
+<div id="wfMap" class="status">No assessment map yet.</div>
+<div id="wfRiskDetail" class="status">No rated risks.</div>
+</div>
+
+<div class="research-card">
+<h2>📄 5. Research Output</h2>
+<div class="research-grid">
+<div><label>Participant / device code</label><input id="researchCode" placeholder="De-identified code"></div>
+<div><label>Session date</label><input id="researchDate" type="date"></div>
+<div><label>Protocol version</label><input id="researchProtocolVersion" value="HEARSEC-RESEARCH-1.0"></div>
+<div><label>Researcher ID</label><input id="researcherId" placeholder="Pseudonymous ID"></div>
+</div>
+<div class="row">
+<button class="primary" onclick="generateWorkflowSnapshot()">Generate research snapshot</button>
+<button class="secondary" onclick="downloadWorkflowSnapshot()">Download JSON</button>
+</div>
+<pre id="wfSnapshot" style="max-height:360px">No research snapshot generated.</pre>
+<div class="status"><b>Research boundary</b><br><span class="mini">Only authorised observations should be collected. Unknown information remains unknown. A missing control or exposed service is not automatically a vulnerability.</span></div>
+</div>
+
+<div id="researchCompat" style="display:none">
+<span id="dashAssets"></span><span id="dashThreats"></span><span id="dashControls"></span><span id="dashFindings"></span><span id="dashRisk"></span><span id="dashNotRated"></span><span id="dashCompleteness"></span><span id="dashEvidence"></span><span id="dashAuth"></span><span id="dashUpdated"></span><span id="dashRiskBreakdown"></span>
+<span id="liveDeviceSnapshotCompat"></span>
+</div>
+</section><section class="card" id="validationLab"><h2>Validation & Quality-Control Lab</h2><div class="small">Runs deterministic checks on the current HearSec record. Validation status measures data integrity and workflow completeness; it is not a clinical or device-safety rating.</div><div class="row"><button onclick="runValidation()">Run validation</button><button onclick="loadSyntheticDevice()">Load synthetic test device</button><button onclick="downloadValidationReport()">Download validation JSON</button></div><div id="validationResult" class="finding">No validation run.</div><pre id="validationPreview" style="max-height:320px;overflow:auto;white-space:pre-wrap">No report generated.</pre></section>
 
 <section class="card" id="commandCenter"><h1>HearSec Device Command Center</h1><div class="small">Unified operational view for one hearing-aid/device record. Status reflects documentation and recorded evidence, not clinical quality or safety.</div><div class="grid"><div><label>Current device</label><input id="ccDevice" placeholder="Manufacturer / model / serial"></div><div><label>Record status</label><select id="ccStatus"><option>Active</option><option>Under assessment</option><option>Service</option><option>Retired</option></select></div><div><label>Next review date</label><input id="ccReview" type="date"></div><div><label>Owner / clinic</label><input id="ccOwner"></div></div><div class="row"><button onclick="saveCommandCenter()">Save device dashboard</button><button onclick="addTimelineEvent()">Add timeline event</button></div><div id="ccStatusBox" class="finding">No dashboard record saved.</div><div id="timelineBox" class="finding"><b>Device timeline</b><br>No events recorded.</div></section>
 
@@ -349,4 +471,9 @@ function startLiveConnectionMonitor(){
  monitorLiveHearingAid();
 }
 document.addEventListener('DOMContentLoaded',startLiveConnectionMonitor);
-</script></body></html>
+<script>
+function saveResearchStudy(){var d={title:document.getElementById('researchTitle').value.trim(),study_id:document.getElementById('researchId').value.trim(),design:document.getElementById('researchDesign').value,population:document.getElementById('researchPopulation').value.trim(),question:document.getElementById('researchQuestion').value.trim(),objective:document.getElementById('researchObjective').value.trim(),hypothesis:document.getElementById('researchHypothesis').value.trim(),saved_at:new Date().toISOString()};localStorage.setItem('hearsec_research_study_v1',JSON.stringify(d));document.getElementById('researchProtocolStatus').textContent='Saved locally · '+new Date().toLocaleString()}
+function loadResearchStudy(){try{var d=JSON.parse(localStorage.getItem('hearsec_research_study_v1')||'null');if(!d){document.getElementById('researchProtocolStatus').textContent='No saved protocol found.';return}['researchTitle','researchId','researchPopulation','researchQuestion','researchObjective','researchHypothesis'].forEach(function(id){var map={researchTitle:'title',researchId:'study_id',researchPopulation:'population',researchQuestion:'question',researchObjective:'objective',researchHypothesis:'hypothesis'};if(d[map[id]]!==undefined)document.getElementById(id).value=d[map[id]]});if(d.design)document.getElementById('researchDesign').value=d.design;document.getElementById('researchProtocolStatus').textContent='Loaded saved protocol · '+new Date(d.saved_at).toLocaleString()}catch(e){document.getElementById('researchProtocolStatus').textContent='Saved protocol could not be read.'}}
+function saveResearchEvidence(){var d={captured_at:new Date().toISOString(),source:document.getElementById('researchEvidenceSource').value,confidence:document.getElementById('researchEvidenceConfidence').value,note:document.getElementById('researchEvidenceNote').value.trim(),live:window._liveDeviceEvidence||null};localStorage.setItem('hearsec_research_evidence_v1',JSON.stringify(d));document.getElementById('researchEvidenceNote').dataset.saved='1'}
+function saveResearchFinding(){var d={created_at:new Date().toISOString(),category:document.getElementById('researchFindingCategory').value,status:document.getElementById('researchFindingStatus').value,note:document.getElementById('researchFindingNote').value.trim()};var a=[];try{a=JSON.parse(localStorage.getItem('hearsec_research_findings_v1')||'[]')}catch(e){}a.push(d);localStorage.setItem('hearsec_research_findings_v1',JSON.stringify(a));document.getElementById('researchFindingNote').value='';document.getElementById('wfStatus').textContent='Finding saved locally · '+a.length+' research finding(s)'}
+</script></script></body></html>
