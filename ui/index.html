@@ -318,4 +318,35 @@ function clearLiveDeviceAssessment(){
  document.getElementById('liveAssessmentState').textContent='Waiting for connection.';
  document.getElementById('liveDeviceSnapshot').textContent='No live snapshot.';
 }
+<script>
+window._liveConnectionMonitor=window._liveConnectionMonitor||{started_at:null,last_state:null,last_service_signature:null,events:[]};
+function monitorLiveHearingAid(){
+ var x=window._hearingAidConnection||{},d=x.device,connected=!!(d&&d.gatt&&d.gatt.connected),services=Array.isArray(x.services)?x.services:[],sig=services.map(function(s){return s.id||s.uuid}).sort().join('|'),state=connected?'connected':(d?'selected':'disconnected');
+ var m=window._liveConnectionMonitor;
+ if(m.last_state===null){m.last_state=state;m.last_service_signature=sig}
+ if(state!==m.last_state||sig!==m.last_service_signature){
+  m.events.push({timestamp:new Date().toISOString(),state:state,device:d?d.name||'Unnamed':'None',service_count:services.length,service_signature:sig});
+  m.events=m.events.slice(-100);m.last_state=state;m.last_service_signature=sig;
+  if(typeof syncLiveDeviceAssessment==='function'&&connected)syncLiveDeviceAssessment();
+  if(typeof refreshSecurityDashboard==='function')refreshSecurityDashboard();
+  updateLiveMonitorUI();
+ }
+ updateLiveMonitorUI();
+}
+function updateLiveMonitorUI(){
+ var m=window._liveConnectionMonitor,x=window._hearingAidConnection||{},d=x.device;
+ var box=document.getElementById('haConnStatus');
+ if(box)box.innerHTML='<b>'+((d&&d.gatt&&d.gatt.connected)?'🟢 Connected':(d?'🟡 Selected':'⚪ Disconnected'))+'</b> · monitor active';
+ var s=document.getElementById('haServices');
+ if(s&&Array.isArray(x.services)&&x.services.length)s.innerHTML='<b>Discovered primary services: '+x.services.length+'</b><div class="small">'+x.services.map(function(v){return v.id||v.uuid}).join('<br>')+'</div>';
+ var live=document.getElementById('liveAssessmentState');
+ if(live)live.textContent=(d&&d.gatt&&d.gatt.connected)?'Live connection monitored · evidence synchronised.':'Waiting for active connection.';
+}
+function startLiveConnectionMonitor(){
+ if(window._liveConnectionMonitor.started_at)return;
+ window._liveConnectionMonitor.started_at=new Date().toISOString();
+ setInterval(monitorLiveHearingAid,1000);
+ monitorLiveHearingAid();
+}
+document.addEventListener('DOMContentLoaded',startLiveConnectionMonitor);
 </script></body></html>
