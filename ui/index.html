@@ -26,106 +26,46 @@ body>header,body>main,body>section.card:not(#researchWorkspace){display:none!imp
 </style></style></head>
 <body><section id="researchWorkspace">
 <div class="hero">
-<div class="mini">HEARSEC · RESEARCH WORKSPACE · v1</div>
-<h1>Connected Hearing Technology Security Research</h1>
-<p><b>Research aim:</b> systematically document what security, privacy and connectivity evidence can be observed across a hearing-aid ecosystem, then map those observations to threats, controls and research findings.</p>
-<div class="stage">
-<div><b>01</b>Study design</div><div><b>02</b>Device</div><div><b>03</b>Evidence</div><div><b>04</b>Analysis</div><div><b>05</b>Report</div>
-</div>
+<div class="mini">HEARSEC · ASSESSMENT ANALYSIS WORKSPACE</div>
+<h1>HearSec</h1>
+<p>Import an assessment, analyse the documented evidence and risk, then generate a reproducible report.</p>
+<div class="stage"><div><b>01</b>Import</div><div><b>02</b>Analyse</div><div><b>03</b>Report</div></div>
 </div>
 
 <div class="research-card">
-<h2>🔬 1. Research Study</h2>
-<div class="research-grid">
-<div><label>Study title</label><input id="researchTitle" value="Security and Privacy Assessment of Connected Hearing Technology"></div>
-<div><label>Study ID</label><input id="researchId" placeholder="HEARSEC-2026-001"></div>
-<div><label>Study design</label><select id="researchDesign"><option>Exploratory observational study</option><option>Descriptive technical assessment</option><option>Comparative device study</option><option>Method-development study</option></select></div>
-<div><label>Target population / device group</label><input id="researchPopulation" placeholder="Connected hearing aids / companion ecosystems"></div>
-</div>
-<label style="margin-top:12px">Research question</label>
-<textarea id="researchQuestion">What security and privacy characteristics can be documented from the observable interfaces of connected hearing technology, and how can these observations be systematically mapped to threats, controls and evidence?</textarea>
-<div class="research-grid" style="margin-top:12px">
-<div><label>Primary objective</label><textarea id="researchObjective">Develop and validate a reproducible evidence-based assessment workflow for connected hearing technology.</textarea></div>
-<div><label>Hypothesis / expectation</label><textarea id="researchHypothesis">A structured evidence-first workflow can improve consistency and reproducibility of security and privacy assessment across connected hearing-device ecosystems.</textarea></div>
-</div>
-<div class="row"><button class="primary" onclick="saveResearchStudy()">Save study protocol</button><button class="secondary" onclick="loadResearchStudy()">Load saved protocol</button></div>
-<div id="researchProtocolStatus" class="status">No study protocol saved in this browser.</div>
+<h2>📥 1. Import Assessment</h2>
+<p class="mini">Load a HearSec JSON assessment exported from the assessment workflow or another authorised assessment record. Nothing is uploaded to a server.</p>
+<div class="row"><input id="assessmentImport" type="file" accept=".json,application/json"><button class="primary" onclick="importHearSecAssessment()">Import assessment</button><button class="secondary" onclick="loadExampleAssessment()">Load example</button></div>
+<div id="importStatus" class="status">No assessment imported.</div>
+<pre id="importPreview" style="max-height:260px">No assessment data loaded.</pre>
 </div>
 
 <div class="research-card">
-<h2>🦻 2. Device & Authorised Connection</h2>
+<h2>🔎 2. Analyse Assessment</h2>
 <div class="research-grid">
-<div><label>Manufacturer / device</label><input id="device" placeholder="Enter research device"></div>
-<div><label>Model</label><input id="model" placeholder="Model"></div>
-<div><label>Serial / research code</label><input id="serial" placeholder="Use a de-identified code where possible"></div>
-<div><label>Firmware</label><input id="firmware" placeholder="Firmware version"></div>
+<div class="status"><span class="mini">Assets</span><b id="analysisAssets">0</b></div>
+<div class="status"><span class="mini">Threats</span><b id="analysisThreats">0</b></div>
+<div class="status"><span class="mini">Evidence</span><b id="analysisEvidence">0</b></div>
+<div class="status"><span class="mini">Controls</span><b id="analysisControls">0</b></div>
+<div class="status"><span class="mini">Findings</span><b id="analysisFindings">0</b></div>
+<div class="status"><span class="mini">Rated risks</span><b id="analysisRated">0</b></div>
 </div>
-<label style="margin-top:12px">Authorised research scope</label>
-<textarea id="auth" placeholder="Document the device, software and techniques you are authorised to assess."></textarea>
-<div class="row">
-<button class="primary" onclick="connectHearingAid()">Connect authorised device</button>
-<button class="secondary" onclick="discoverHearingAid()">Discover services</button>
-<button class="secondary" onclick="disconnectHearingAid()">Disconnect</button>
-</div>
-<div class="research-grid">
-<div class="status"><b>Connection</b><div id="haConnStatus">Not connected.</div></div>
-<div class="status"><b>Device</b><div id="haConnDevice">None selected.</div></div>
-</div>
-<div id="haServices" class="status">No GATT services discovered.</div>
-<div class="mini" style="margin-top:8px">The browser requires explicit device selection. Observed services are evidence, not proof of a vulnerability.</div>
+<div id="analysisSummary" class="status" style="margin-top:12px">Import an assessment to analyse it.</div>
+<div id="analysisRisk" class="status">No risk analysis available.</div>
+<div id="analysisEvidence" class="status">No evidence analysis available.</div>
+<div id="analysisFindingsList" class="status">No findings available.</div>
 </div>
 
 <div class="research-card">
-<h2>📋 3. Evidence Collection</h2>
+<h2>📄 3. Generate Report</h2>
 <div class="research-grid">
-<div><label>Evidence source</label><select id="researchEvidenceSource"><option>Browser Bluetooth / GATT observation</option><option>Device label / identity</option><option>Manufacturer documentation</option><option>Regulatory / public source</option><option>DSP / audio measurement</option><option>Clinical / fitting software observation</option></select></div>
-<div><label>Evidence confidence</label><select id="researchEvidenceConfidence"><option>High</option><option>Moderate</option><option>Low</option><option>Unknown</option></select></div>
+<div><label>Report title</label><input id="reportTitle" value="HearSec Security & Privacy Assessment Report"></div>
+<div><label>Analyst / researcher ID</label><input id="reportAnalyst" placeholder="Pseudonymous ID"></div>
+<div><label>Assessment date</label><input id="reportDate" type="date"></div>
+<div><label>Report version</label><input id="reportVersion" value="HEARSEC-REPORT-1.0"></div>
 </div>
-<label style="margin-top:12px">Observation / evidence note</label>
-<textarea id="researchEvidenceNote" placeholder="Record exactly what was observed, where it came from, and what it does NOT establish."></textarea>
-<div class="row"><button class="primary" onclick="syncLiveDeviceAssessment();saveResearchEvidence()">Capture evidence</button><button class="secondary" onclick="syncLiveDeviceAssessment()">Refresh live observation</button></div>
-<div class="research-grid">
-<div class="status"><b>Live asset</b><div id="liveAssetName">Not connected.</div></div>
-<div class="status"><b>Observed GATT</b><div id="liveGattEvidence">No services recorded.</div></div>
-<div class="status"><b>Evidence state</b><div id="liveAssessmentState">Waiting for connection.</div></div>
-</div>
-<pre id="liveDeviceSnapshot" style="max-height:260px">No live snapshot.</pre>
-</div>
-
-<div class="research-card">
-<h2>🧠 4. Analysis & Findings</h2>
-<div class="research-grid">
-<div><label>Finding category</label><select id="researchFindingCategory"><option>Authentication / authorisation</option><option>Bluetooth / communication</option><option>Privacy / data handling</option><option>Configuration / update</option><option>Clinical software / ecosystem</option><option>Other</option></select></div>
-<div><label>Finding status</label><select id="researchFindingStatus"><option>Open</option><option>Under review</option><option>Resolved</option><option>Not reproducible</option><option>Not rated</option></select></div>
-</div>
-<label style="margin-top:12px">Research finding</label>
-<textarea id="researchFindingNote" placeholder="Describe the documented observation and evidence without overstating what it proves."></textarea>
-<div class="row"><button class="primary" onclick="syncSecurityWorkflow();saveResearchFinding()">Add finding to study</button><button class="secondary" onclick="syncSecurityWorkflow()">Recalculate workflow</button></div>
-<div id="wfSteps" class="stats" style="margin-top:12px"></div>
-<div id="wfStatus" class="status">Workflow not synchronised yet.</div>
-<div id="wfMap" class="status">No assessment map yet.</div>
-<div id="wfRiskDetail" class="status">No rated risks.</div>
-</div>
-
-<div class="research-card">
-<h2>📄 5. Research Output</h2>
-<div class="research-grid">
-<div><label>Participant / device code</label><input id="researchCode" placeholder="De-identified code"></div>
-<div><label>Session date</label><input id="researchDate" type="date"></div>
-<div><label>Protocol version</label><input id="researchProtocolVersion" value="HEARSEC-RESEARCH-1.0"></div>
-<div><label>Researcher ID</label><input id="researcherId" placeholder="Pseudonymous ID"></div>
-</div>
-<div class="row">
-<button class="primary" onclick="generateWorkflowSnapshot()">Generate research snapshot</button>
-<button class="secondary" onclick="downloadWorkflowSnapshot()">Download JSON</button>
-</div>
-<pre id="wfSnapshot" style="max-height:360px">No research snapshot generated.</pre>
-<div class="status"><b>Research boundary</b><br><span class="mini">Only authorised observations should be collected. Unknown information remains unknown. A missing control or exposed service is not automatically a vulnerability.</span></div>
-</div>
-
-<div id="researchCompat" style="display:none">
-<span id="dashAssets"></span><span id="dashThreats"></span><span id="dashControls"></span><span id="dashFindings"></span><span id="dashRisk"></span><span id="dashNotRated"></span><span id="dashCompleteness"></span><span id="dashEvidence"></span><span id="dashAuth"></span><span id="dashUpdated"></span><span id="dashRiskBreakdown"></span>
-<span id="liveDeviceSnapshotCompat"></span>
+<div class="row"><button class="primary" onclick="generateAnalysisReport()">Generate report</button><button class="secondary" onclick="downloadAnalysisReport()">Download JSON report</button></div>
+<pre id="analysisReport" style="max-height:420px">No report generated.</pre>
 </div>
 </section><section class="card" id="validationLab"><h2>Validation & Quality-Control Lab</h2><div class="small">Runs deterministic checks on the current HearSec record. Validation status measures data integrity and workflow completeness; it is not a clinical or device-safety rating.</div><div class="row"><button onclick="runValidation()">Run validation</button><button onclick="loadSyntheticDevice()">Load synthetic test device</button><button onclick="downloadValidationReport()">Download validation JSON</button></div><div id="validationResult" class="finding">No validation run.</div><pre id="validationPreview" style="max-height:320px;overflow:auto;white-space:pre-wrap">No report generated.</pre></section>
 
@@ -476,4 +416,47 @@ function saveResearchStudy(){var d={title:document.getElementById('researchTitle
 function loadResearchStudy(){try{var d=JSON.parse(localStorage.getItem('hearsec_research_study_v1')||'null');if(!d){document.getElementById('researchProtocolStatus').textContent='No saved protocol found.';return}['researchTitle','researchId','researchPopulation','researchQuestion','researchObjective','researchHypothesis'].forEach(function(id){var map={researchTitle:'title',researchId:'study_id',researchPopulation:'population',researchQuestion:'question',researchObjective:'objective',researchHypothesis:'hypothesis'};if(d[map[id]]!==undefined)document.getElementById(id).value=d[map[id]]});if(d.design)document.getElementById('researchDesign').value=d.design;document.getElementById('researchProtocolStatus').textContent='Loaded saved protocol · '+new Date(d.saved_at).toLocaleString()}catch(e){document.getElementById('researchProtocolStatus').textContent='Saved protocol could not be read.'}}
 function saveResearchEvidence(){var d={captured_at:new Date().toISOString(),source:document.getElementById('researchEvidenceSource').value,confidence:document.getElementById('researchEvidenceConfidence').value,note:document.getElementById('researchEvidenceNote').value.trim(),live:window._liveDeviceEvidence||null};localStorage.setItem('hearsec_research_evidence_v1',JSON.stringify(d));document.getElementById('researchEvidenceNote').dataset.saved='1'}
 function saveResearchFinding(){var d={created_at:new Date().toISOString(),category:document.getElementById('researchFindingCategory').value,status:document.getElementById('researchFindingStatus').value,note:document.getElementById('researchFindingNote').value.trim()};var a=[];try{a=JSON.parse(localStorage.getItem('hearsec_research_findings_v1')||'[]')}catch(e){}a.push(d);localStorage.setItem('hearsec_research_findings_v1',JSON.stringify(a));document.getElementById('researchFindingNote').value='';document.getElementById('wfStatus').textContent='Finding saved locally · '+a.length+' research finding(s)'}
+</script><script>
+window._importedAssessment=null;
+window._analysisReport=null;
+function parseAssessmentObject(o){
+ var a=o.assessment||o.data||o;
+ if(a.assessment&&typeof a.assessment==='object')a=a.assessment;
+ var threats=Array.isArray(a.threats)?a.threats:[],findings=Array.isArray(a.findings)?a.findings:[],evidence=Array.isArray(a.evidence)?a.evidence:[],controls=Array.isArray(a.controls)?a.controls:[],assets=Array.isArray(a.assets)?a.assets:[],risks=Array.isArray(a.risks)?a.risks:[];
+ if(!assets.length&&a.asset)assets=[a.asset];
+ var rated=findings.map(function(f){var r=f.risk||{},l=Number(r.likelihood),i=Number(r.impact);return l>=1&&l<=5&&i>=1&&i<=5?{finding:f,score:l*i,level:l*i>=20?'critical':l*i>=15?'high':l*i>=8?'medium':l*i>=4?'low':'informational'}:null}).filter(Boolean);
+ if(!risks.length)risks=rated;
+ return {raw:o,assets:assets,threats:threats,evidence:evidence,controls:controls,findings:findings,risks:risks,rated:rated};
+}
+function renderAnalysis(){
+ var a=window._importedAssessment;if(!a)return;
+ document.getElementById('analysisAssets').textContent=a.assets.length;
+ document.getElementById('analysisThreats').textContent=a.threats.length;
+ document.getElementById('analysisEvidence').textContent=a.evidence.length;
+ document.getElementById('analysisControls').textContent=a.controls.length;
+ document.getElementById('analysisFindings').textContent=a.findings.length;
+ document.getElementById('analysisRated').textContent=a.rated.length;
+ var counts={critical:0,high:0,medium:0,low:0,informational:0};a.rated.forEach(function(x){counts[x.level]++});
+ document.getElementById('analysisSummary').innerHTML='<b>Assessment analysed.</b> '+a.assets.length+' asset(s), '+a.threats.length+' threat(s), '+a.evidence.length+' evidence record(s), '+a.controls.length+' control(s), '+a.findings.length+' finding(s).';
+ document.getElementById('analysisRisk').innerHTML='<b>Risk distribution</b><br>Critical: '+counts.critical+' · High: '+counts.high+' · Medium: '+counts.medium+' · Low: '+counts.low+' · Informational: '+counts.informational+' · Not rated: '+(a.findings.length-a.rated.length);
+ document.getElementById('analysisEvidence').innerHTML='<b>Evidence posture</b><br>'+a.evidence.length+' documented evidence record(s). Evidence is treated as observation/provenance and does not by itself establish a vulnerability.';
+ document.getElementById('analysisFindingsList').innerHTML='<b>Findings</b><br>'+(a.findings.slice(0,12).map(function(f){var r=f.risk||{};return '• '+(f.title||f.name||f.finding||'Finding')+(r.score?' — risk '+r.score:' — not rated')}).join('<br>')||'No findings recorded.');
+}
+async function importHearSecAssessment(){
+ var file=document.getElementById('assessmentImport').files[0];if(!file){document.getElementById('importStatus').textContent='Choose a JSON assessment first.';return}
+ try{var o=JSON.parse(await file.text());window._importedAssessment=parseAssessmentObject(o);document.getElementById('importStatus').innerHTML='<b>Imported:</b> '+file.name+' · '+new Date().toLocaleString();document.getElementById('importPreview').textContent=JSON.stringify(o,null,2).slice(0,12000);renderAnalysis()}
+ catch(e){document.getElementById('importStatus').textContent='Import failed: invalid JSON assessment.'}
+}
+function loadExampleAssessment(){
+ var o={schema_version:'hearsec-assessment-analysis-1.0',assets:[{name:'Example hearing aid ecosystem'}],threats:[{title:'Unauthorised configuration access'}],evidence:[{title:'Assessment documentation',status:'documented'}],controls:[{title:'Authentication and authorisation'}],findings:[{title:'Example finding',risk:{likelihood:2,impact:3}}]};
+ window._importedAssessment=parseAssessmentObject(o);document.getElementById('importStatus').innerHTML='<b>Example assessment loaded.</b>';document.getElementById('importPreview').textContent=JSON.stringify(o,null,2);renderAnalysis();
+}
+function generateAnalysisReport(){
+ if(!window._importedAssessment){document.getElementById('analysisReport').textContent='Import an assessment first.';return}
+ var a=window._importedAssessment,report={schema_version:document.getElementById('reportVersion').value.trim()||'HEARSEC-REPORT-1.0',title:document.getElementById('reportTitle').value.trim(),analyst_id:document.getElementById('reportAnalyst').value.trim(),assessment_date:document.getElementById('reportDate').value||new Date().toISOString().slice(0,10),generated_at:new Date().toISOString(),summary:{assets:a.assets.length,threats:a.threats.length,evidence:a.evidence.length,controls:a.controls.length,findings:a.findings.length,rated_risks:a.rated.length,not_rated:a.findings.length-a.rated.length},risk_analysis:a.rated.map(function(x){return{title:x.finding.title||x.finding.name||x.finding.finding||'Finding',score:x.score,level:x.level}}),findings:a.findings,safety_boundary:'This report summarises documented assessment data. It does not independently prove the security or vulnerability status of a third-party device.'};
+ window._analysisReport=report;document.getElementById('analysisReport').textContent=JSON.stringify(report,null,2);return report;
+}
+function downloadAnalysisReport(){
+ var r=window._analysisReport||generateAnalysisReport();if(!r)return;var b=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='hearsec-assessment-report-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(u)},1000)
+}
 </script></script></body></html>
