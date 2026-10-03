@@ -72,20 +72,15 @@ The connection layer:
 
 **Browser limitation:** Web Bluetooth cannot silently pair with devices or bypass operating-system/device authentication. Commercial hearing aids may expose proprietary interfaces that are unavailable to generic browser applications.
 
-### 3. Live Security Dashboard
-The dashboard provides a current assessment overview:
+### 3. Minimal assessment interface
+The browser interface intentionally exposes only the research workflow:
 
-- Assets
-- Threats
-- Controls
-- Findings
-- Rated risk
-- Not-rated items
-- Metadata completeness
-- Evidence posture
-- Authorisation/scope status
-- Risk breakdown
-- Last refresh
+- Serial Number / Research ID
+- Import Assessment
+- Analyse
+- Report
+
+The technical assessment logic remains beneath the interface so the clinical/research workflow stays simple.
 
 ### 4. Linked Security Assessment Workflow
 
@@ -120,31 +115,11 @@ HearSec supports evidence from:
 
 Evidence is treated as **observed, documented information with provenance**, rather than proof of a security weakness.
 
-### 6. DSP / audio research
-The browser UI includes authorised research utilities for:
-- Controlled test-tone generation
-- WAV analysis
-- Reference-vs-processed comparison
-- Recording-level measurements
-- DSP test-session metadata
-- Quality-gate checks
+### 6. Clinical translation
+The clinical translation layer converts verified technical assessment categories into conservative clinician-facing context and recommended follow-up language. It does not diagnose compromise or infer patient harm from symptoms.
 
-These measurements describe the tested recording/session. They do not expose proprietary internal DSP algorithms.
-
-### 7. Device research & lifecycle workspace
-The platform includes browser-local tooling for:
-- Device identity
-- Serial/UDI metadata
-- Manufacturer information
-- Regulatory information
-- Safety/recall research
-- Device history
-- Evidence confidence
-- Privacy/de-identification mode
-- Dataset export
-- Device comparison
-- Research reports
-- Audit logging
+### 7. Research validation metrics
+HearSec includes deterministic helpers for evidence grounding, hallucination/unsupported-claim measurement, AI-versus-expert agreement, and binary classification metrics. These are research measurements; acceptance thresholds are hypotheses/validation criteria, not claims of current performance.
 
 ## 🧪 Validation
 
