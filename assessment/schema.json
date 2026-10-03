@@ -364,8 +364,23 @@
                 ]
               }
             }
+          },
+          "metrics": {
+            "type": "object"
           }
         }
+      }
+    },
+    "framework_version": {
+      "type": "string"
+    },
+    "evidence_summary": {
+      "type": "object"
+    },
+    "clinical_translations": {
+      "type": "array",
+      "items": {
+        "type": "object"
       }
     }
   }
