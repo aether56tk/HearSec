@@ -157,6 +157,23 @@
           },
           "reproducible": {
             "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "observed",
+              "laboratory_observation",
+              "documented",
+              "user_reported",
+              "not_verified",
+              "unknown"
+            ]
+          },
+          "domain_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
@@ -380,7 +397,30 @@
     "clinical_translations": {
       "type": "array",
       "items": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "evidence_strength": {
+            "type": "string"
+          },
+          "clinical_context": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recommended_action": {
+            "type": "string"
+          },
+          "patient_safe_language": {
+            "type": "string"
+          }
+        }
       }
     }
   }
