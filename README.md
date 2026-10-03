@@ -149,7 +149,15 @@ They do **not** prove that:
 
 Real-device findings require separate authorised research and evidence.
 
-## 🔬 Research purpose and methodology\n\nThe research question is:\n\n> Can an evidence-grounded, AI-assisted framework provide a reliable, reproducible and clinically interpretable method for assessing cybersecurity and privacy risks across connected and AI-enabled hearing-aid ecosystems?\n\nThe study is organized into framework validation, authorized ecosystem assessment, AI evidence validation and inter-rater reliability. See [Research purpose](docs/RESEARCH_PURPOSE.md) and [AI evidence method](docs/AI_EVIDENCE_METHOD.md).\n\n
+## 🔬 Research purpose and methodology
+
+The research question is:
+
+> Can an evidence-grounded, AI-assisted framework provide a reliable, reproducible and clinically interpretable method for assessing cybersecurity and privacy risks across connected and AI-enabled hearing-aid ecosystems?
+
+The study is organized into framework validation, authorized ecosystem assessment, AI evidence validation and inter-rater reliability. See [Research purpose](docs/RESEARCH_PURPOSE.md) and [AI evidence method](docs/AI_EVIDENCE_METHOD.md).
+
+
 
 A typical authorised assessment follows:
 
@@ -229,7 +237,9 @@ HearSec/
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Assessment workflow](docs/ASSESSMENT_WORKFLOW.md)
-- [Methodology](docs/METHODOLOGY.md)\n- [Research purpose](docs/RESEARCH_PURPOSE.md)\n- [AI evidence method](docs/AI_EVIDENCE_METHOD.md)
+- [Methodology](docs/METHODOLOGY.md)
+- [Research purpose](docs/RESEARCH_PURPOSE.md)
+- [AI evidence method](docs/AI_EVIDENCE_METHOD.md)
 - [Research validation](docs/RESEARCH_VALIDATION.md)
 - [Validation status](VALIDATION_STATUS.md)
 - [Security policy](SECURITY.md)
