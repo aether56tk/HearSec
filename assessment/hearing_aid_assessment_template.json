@@ -17,22 +17,63 @@
     "app_version": "Unknown",
     "platform": "Unknown",
     "clinical_software": "Unknown",
-    "connectivity": ["Unknown"]
+    "connectivity": [
+      "Unknown"
+    ]
   },
   "security_domains": {
-    "device_identity": {"status": "not_assessed", "evidence_ids": []},
-    "connectivity": {"status": "not_assessed", "evidence_ids": []},
-    "pairing_authentication": {"status": "not_assessed", "evidence_ids": []},
-    "services_interfaces": {"status": "not_assessed", "evidence_ids": []},
-    "firmware_updates": {"status": "not_assessed", "evidence_ids": []},
-    "companion_app": {"status": "not_assessed", "evidence_ids": []},
-    "cloud_services": {"status": "not_assessed", "evidence_ids": []},
-    "privacy": {"status": "not_assessed", "evidence_ids": []},
-    "clinical_software": {"status": "not_assessed", "evidence_ids": []},
-    "access_control": {"status": "not_assessed", "evidence_ids": []},
-    "logging_monitoring": {"status": "not_assessed", "evidence_ids": []},
-    "resilience": {"status": "not_assessed", "evidence_ids": []},
-    "physical_service": {"status": "not_assessed", "evidence_ids": []}
+    "device_identity": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "connectivity": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "pairing_authentication": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "services_interfaces": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "firmware_updates": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "companion_app": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "cloud_services": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "privacy": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "clinical_software": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "access_control": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "logging_monitoring": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "resilience": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    },
+    "physical_service": {
+      "status": "not_assessed",
+      "evidence_ids": []
+    }
   },
   "data_flows": [],
   "evidence": [],
@@ -42,5 +83,9 @@
     "known": [],
     "unknown": [],
     "limitations": []
-  }
+  },
+  "framework_version": "0.2.0",
+  "evidence_summary": {},
+  "clinical_translations": [],
+  "ai_assessments": []
 }
