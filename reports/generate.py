@@ -4,6 +4,7 @@ from typing import Any
 
 from assessment.hearing_aid import analyze_assessment
 from assessment.risk import assess_risk, summarize_findings
+from assessment.evidence import summarize_evidence
 
 
 def render_report(assessment: dict[str, Any]) -> str:
@@ -48,14 +49,25 @@ def render_report(assessment: dict[str, Any]) -> str:
     if coverage["unassessed_domains"]:
         lines.append("- Unassessed domains: " + ", ".join(coverage["unassessed_domains"]))
 
-    lines.extend(["", "## 3. Data flows"])
+    lines.extend(["", "## 3. Evidence completeness"])
+    ec = coverage.get("evidence_completeness", {})
+    lines.extend([
+        f"- Domain assessment completeness: {ec.get("percentage", 0)}%",
+        f"- Evidence records: {ec.get("evidence_records", 0)}",
+        "- Completeness is not a security score.",
+    ])
+    evidence_summary = summarize_evidence(assessment.get("evidence", []))
+    lines.append(f"- Verified/documented evidence records: {evidence_summary["verified_or_documented"]}")
+    lines.append(f"- Unverified evidence records: {evidence_summary["unverified"]}")
+
+    lines.extend(["", "## 4. Data flows"])
     for flow in assessment.get("data_flows", []):
         lines.append(
             f"- {flow.get('source', '')} → {flow.get('destination', '')}: "
             f"{flow.get('data_category', '')}; protection: {flow.get('protection', '')}"
         )
 
-    lines.extend(["", "## 4. Evidence"])
+    lines.extend(["", "## 5. Evidence"])
     for evidence in assessment.get("evidence", []):
         lines.append(
             f"- {evidence.get('id', '')}: {evidence.get('type', '')} — "
@@ -63,14 +75,14 @@ def render_report(assessment: dict[str, Any]) -> str:
             f"(source: {evidence.get('source', '')})"
         )
 
-    lines.extend(["", "## 5. Controls"])
+    lines.extend(["", "## 6. Controls"])
     for control in assessment.get("controls", []):
         lines.append(
             f"- {control.get('id', '')}: {control.get('category', '')} — "
             f"{control.get('status', '')}; {control.get('description', '')}"
         )
 
-    lines.extend(["", "## 6. Findings"])
+    lines.extend(["", "## 7. Findings"])
     for finding in assessment.get("findings", []):
         risk = finding.get("risk", {})
         calculated = assess_risk(risk.get("likelihood"), risk.get("impact"))
@@ -94,12 +106,12 @@ def render_report(assessment: dict[str, Any]) -> str:
 
     summary = summarize_findings(assessment.get("findings", []))
     lines.extend([
-        "## 7. Risk summary",
+        "## 8. Risk summary",
         f"- Total findings: {summary['total']}",
         f"- Rated findings: {summary['rated']}",
         f"- Not rated: {summary['not_rated']}",
         "",
-        "## 8. Limitations",
+        "## 9. Limitations",
         "This report reflects only documented evidence within the assessment scope. "
         "Unknown or unassessed information is not treated as a vulnerability. "
         "It does not imply exploitation, penetration testing, vendor confirmation, "
