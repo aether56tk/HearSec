@@ -9,6 +9,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from assessment.evidence import evidence_completeness, summarize_evidence
+from assessment.framework import domain_coverage, framework_metadata
+
 REQUIRED_TARGET_FIELDS = (
     "device_type",
     "manufacturer",
@@ -115,6 +118,15 @@ def analyze_assessment(assessment: dict[str, Any]) -> dict[str, Any]:
         data_flows = []
 
     completeness = completeness_report(assessment)
+    domain_summary = domain_coverage(assessment)
+    evidence_summary = summarize_evidence(evidence)
+    completeness["domain_coverage"] = domain_summary
+    completeness["evidence_summary"] = evidence_summary
+    completeness["evidence_completeness"] = evidence_completeness(
+        domain_count=domain_summary["total"],
+        assessed_domains=domain_summary["assessed"],
+        evidence_count=len(evidence),
+    )
 
     rated = 0
     not_rated = 0
@@ -146,6 +158,7 @@ def analyze_assessment(assessment: dict[str, Any]) -> dict[str, Any]:
             not_rated += 1
 
     return {
+        "framework": framework_metadata(),
         "assessment_id": assessment.get("assessment_id", ""),
         "target": assessment.get("target", {}),
         "counts": {
