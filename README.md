@@ -1,3 +1,5 @@
+![CI](https://github.com/aether56tk/HearSec/actions/workflows/test.yml/badge.svg)
+
 # HearSec
 
 **Evidence-grounded, AI-assisted cybersecurity and privacy assessment framework for connected hearing-aid ecosystems.**
