@@ -52,13 +52,13 @@ def render_report(assessment: dict[str, Any]) -> str:
     lines.extend(["", "## 3. Evidence completeness"])
     ec = coverage.get("evidence_completeness", {})
     lines.extend([
-        f"- Domain assessment completeness: {ec.get("percentage", 0)}%",
-        f"- Evidence records: {ec.get("evidence_records", 0)}",
+        f"- Domain assessment completeness: {ec.get('percentage', 0)}%",
+        f"- Evidence records: {ec.get('evidence_records', 0)}",
         "- Completeness is not a security score.",
     ])
     evidence_summary = summarize_evidence(assessment.get("evidence", []))
-    lines.append(f"- Verified/documented evidence records: {evidence_summary["verified_or_documented"]}")
-    lines.append(f"- Unverified evidence records: {evidence_summary["unverified"]}")
+    lines.append(f"- Verified/documented evidence records: {evidence_summary['verified_or_documented']}")
+    lines.append(f"- Unverified evidence records: {evidence_summary['unverified']}")
 
     lines.extend(["", "## 4. Data flows"])
     for flow in assessment.get("data_flows", []):
